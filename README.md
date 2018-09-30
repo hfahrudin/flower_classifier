@@ -37,5 +37,7 @@ I use [Keras](https://keras.io/) VGG16 as pre-trained model and deploying it in 
 
 ##Contact me
 if you have any question, email me for fast response.
+
 email : fahrudinhasby12@gmail.com
+
 facebook : https://www.facebook.com/hasby.fahrudin
