@@ -30,7 +30,7 @@ def predict():
     imgData = request.get_data()
     convertImage(imgData)
     img = imread('output.png')
-    img = resize(img,(200,200, 3))
+    img = resize(img,(299,299, 3))
     img = np.expand_dims(img,axis=0)
     if(np.max(img)>1):
         img = img/255.0
