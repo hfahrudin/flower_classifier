@@ -1,1 +1,4 @@
 theme: jekyll-theme-cayman
+title: [Flower Classification]
+description: [Classify flower using top 4 pre-trained models]
+show_downloads: ["true"]
