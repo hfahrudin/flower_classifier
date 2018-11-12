@@ -35,7 +35,8 @@ I use [Keras](https://keras.io/) VGG16 as pre-trained model and deploying it in 
 5. run ```python vgg16-model.py``` in terminal. After the training process, it should appear ```model.json``` and ```model.h5```.
 6. Move ```model.json``` and ```model.h5``` to ```model``` folder then replace the old file with new file.
 
-##Contact me
+## Contact me
+
 if you have any question, email me for fast response.
 
 email : fahrudinhasby12@gmail.com
