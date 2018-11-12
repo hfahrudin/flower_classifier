@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from keras.applications.vgg16 import VGG16
+from keras.applications.resnet50 import ResNet50
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Input, Flatten, Dense, Dropout
 from keras.models import Model
@@ -19,28 +17,28 @@ nb_epoch = 10
 
 #build CNN
 
-model_vgg16_conv = VGG16(weights='imagenet', include_top=False)
+model_ResNet50_conv = ResNet50(weights='imagenet', include_top=False)
 
-input = Input(shape=(img_width, img_height, 3),name = 'image_input')
+input = Input(shape=(img_width,img_height, 3),name = 'image_input')
 
-output_vgg16_conv = model_vgg16_conv(input)
+output_vgg16_conv = model_ResNet50_conv(input)
 
-for layer in model_vgg16_conv.layers[:15]:
+for layer in model_ResNet50_conv.layers[:15]:
     layer.trainable = False
-model_vgg16_conv.summary()
+model_ResNet50_conv.summary()
 
 x = Flatten(name='flatten')(output_vgg16_conv)
 x = Dense(256, activation='relu')(x)
 x = Dropout(0.5)(x)
 x = Dense(5, activation='softmax', name='predictis')(x)
 
-vgg_model = Model(inputs=input, outputs=x)
+resnet50_model = Model(inputs=input, outputs=x)
 
-vgg_model.summary()
+resnet50_model.summary()
 
 
 #Image preprocessing and image augmentation with keras
-vgg_model.compile(loss='categorical_crossentropy',
+resnet50_model.compile(loss='categorical_crossentropy',
               optimizer=optimizers.SGD(lr=1e-3, momentum=0.9),
               metrics=['accuracy']
 )
@@ -53,19 +51,19 @@ train_datagen = ImageDataGenerator(rescale = 1./255,
 
 test_datagen = ImageDataGenerator(rescale = 1./255)
 
-training_set = train_datagen.flow_from_directory('dataset/training_set',
-                                                 target_size = (img_width, img_height),
+training_set = train_datagen.flow_from_directory(train_data_dir,
+                                                 target_size = (img_width,img_height),
                                                  batch_size = 32,
                                                  class_mode = 'categorical')
 
-test_set = test_datagen.flow_from_directory('dataset/test_set',
-                                            target_size = (img_width, img_height),
+test_set = test_datagen.flow_from_directory(validation_data_dir,
+                                            target_size = (img_width,img_height),
                                             batch_size = 32,
                                             class_mode = 'categorical')
 
 y_true_labels = training_set.class_indices
 
-vgg_model.fit_generator(
+resnet50_model.fit_generator(
         training_set,
         steps_per_epoch=nb_train_samples,
         epochs=nb_epoch,
@@ -75,9 +73,10 @@ vgg_model.fit_generator(
 
 #Save the model
 # serialize model to JSON
-my_model_json = vgg_model.to_json()
-with open("model_vgg16.json", "w") as json_file:
+my_model_json = resnet50_model.to_json()
+with open("model_resnet50.json", "w") as json_file:
     json_file.write(my_model_json)
 # serialize weights to HDF5
-vgg_model.save_weights("model_vgg16.h5")
+resnet50_model.save_weights("model_resnet50.h5")
 print("Saved model to disk")
+

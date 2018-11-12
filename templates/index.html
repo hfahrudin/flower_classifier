@@ -12,27 +12,75 @@
 
 <body>
 
-		<h1>What flower is that?</h1>
+		<h1><b>What flower is that?</b></h1>
 
+		<div >
+    		<table id="example" class="display" width="10%" style="margin-right:20px; margin-top:100px;float:right;"><caption><b>Prediction</b></caption></table>
+    		<table id="info" class="display" width="10%" style="margin-right:20px; margin-top:10px;float:right;"><caption><b>Training Result</b></caption></table>
+
+		</div>
 		<div id="debug" style="margin:65px; margin-top:100px;">
              <canvas id="canvas"></canvas>
              <input type="file" id="inp">
 
-		</div>
-
-		<div style="margin-left:175px; margin-top:460px; float:left; position:absolute;">
-
 			<a href="#" class="myButton"><span style=" font-weight: 400; font-family: 'Open Sans', Helvetica;	"> Predict </span></a>
-		</div>
-		<div >
-			<h1 id="result" style="margin-right:20px; margin-top:300px;float:right;"><span> </span></h1>
+		
 		</div>
 
-
+        
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">        
   		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 	    <script src="{{ url_for('static',filename='index.js') }}"></script>
 	    <script type="text/javascript">
+    	    var table = $('#myTable').DataTable();
+            $(document).ready(function() {
+                $('#example').DataTable( {
+                    "paging":   false,
+                    "ordering": false,
+                    "info":     false,
+                    "searching": false,
+                    columns: [
+                        { title: "Model" },
+                        { title: "Daisy" },
+                        { title: "Dandelion" },
+                        { title: "Rose" },
+                        { title: "Sunflower" },
+                        { title: "Tulip" }
+                    ]
+                });
+                $('#info').DataTable( {
+                    data : [
+                        [
+                            "Resnet50",
+                            "0.886765",
+                            "0.971277"
+                        ],[
+                            "Vgg16",
+                            "0.867512",
+                            "0.951287"
+                        ],[
+                            "Xception",
+                            "0.911233",
+                            "0.991982"
+                        ],[
+                            "InceptionV3",
+                            "0.897891",
+                            "0.991678"
+                        ]    
+                    ],
+                    "paging":   false,
+                    "ordering": false,
+                    "info":     false,
+                    "searching": false,
+                    columns: [
+                        { title: "Model" },
+                        { title: "Val_acc" },
+                        { title: "Acc" }
+                    ]
+                });
+            } );
+
 	   		$(".myButton").click(function(){
 	   			var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 	   			var canvasObj = document.getElementById("canvas");
@@ -42,7 +90,23 @@
 	   				url: $SCRIPT_ROOT + "/predict",
 	   				data: img,
 	   				success: function(data){
-	   					$('#result').text(' Predicted Output: '+data);
+    	   				var input = [];
+    	   				$('#example').DataTable().destroy()
+    	   				var mydata = JSON.parse(data);
+    	   				var arrdata = [mydata.a, mydata.b, mydata.c, mydata.d];
+    	   				arrdata.forEach(function(valdata){			
+                           input.push([
+                                   valdata.model, valdata.daisy, valdata.dandelion, valdata.rose, valdata.sunflower, valdata.tulip
+                               ]);
+                        });
+                        $('#example').DataTable({
+                            "paging":   false,
+                            "ordering": false,
+                            "info":     false,
+                            "searching": false,
+                            data : input
+                        });
+	   					
 	   				}
 	   			});
 	   		});
