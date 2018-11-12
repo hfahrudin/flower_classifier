@@ -1,4 +1,4 @@
-# Flower-classification
+
 <p align="center">
   <img width="750" height="375" src="https://user-images.githubusercontent.com/25025173/48326925-97100280-e66e-11e8-8fe1-4b9b4aa927f9.png">
 </p>
