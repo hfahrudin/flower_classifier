@@ -36,7 +36,7 @@ I use [Keras](https://keras.io/) VGG16, Xception, Resnet50, and InceptionV3 as p
 ```
 4. Open ```{model name}_model.py```, you can choose the base model as you like, and edit the ```CNN``` part. 
 5. run edited python file in terminal. After the training process, it should appear weight and json file named according to the base model.
-6. Move them into the weight and json folder.
+6. Move them into the weight and json folder .
 
 ## Contact me
 
