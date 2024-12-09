@@ -5,6 +5,7 @@ from keras.models import Model
 from keras import optimizers
 train_data_dir = 'dataset/training_set'
 validation_data_dir = 'dataset/test_set'
+random_data = ""
 ## other
 img_width, img_height = 200, 200
 nb_train_samples = 200
